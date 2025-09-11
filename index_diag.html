@@ -1,49 +1,14 @@
-<!DOCTYPE html>
-<html lang="en"><meta charset="utf-8"><title>Index Diagnostics</title>
-<style>
-body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0b0b0f;color:#fff;margin:0;padding:24px}
-table{border-collapse:collapse;width:100%;max-width:900px}
-td,th{border:1px solid #2a2a33;padding:8px}
-.pass{color:#9effa0;font-weight:700} .fail{color:#ff9e9e;font-weight:700}
-small{opacity:.75}
-</style>
-<body>
-<h1>Index Diagnostics</h1>
-<table>
-<tr><th>Check</th><th>Status</th><th>Details</th></tr>
-<script>
-const checks = [
-  ["CSS present","assets/style.css"],
-  ["JS present","assets/app.js"],
-  ["Logo poster","images/logo.webp"],
-  ["Logo video","images/logo_anim.mp4"],
-  ["Award poster","images/award/trophy.png"],
-  ["Award video","images/award/trophy.mp4"],
-  ["Workshop: design","images/workshop/design.webp"],
-  ["Workshop: fabrication","images/workshop/fabrication.webp"],
-  ["Workshop: fabric","images/workshop/fabric.webp"],
-  ["Workshop: install","images/workshop/install.webp"],
-  ["Gallery Set01A","images/gallery/Set01A.webp"],
-  ["Gallery Set01B","images/gallery/Set01B.webp"],
-  ["Gallery Set12A","images/gallery/Set12A.webp"],
-  ["Gallery Set12B","images/gallery/Set12B.webp"]
-];
-function row(label, ok, details){
-  const tr = document.createElement('tr');
-  const s = ok ? '<span class="pass">PASS</span>' : '<span class="fail">FAIL</span>';
-  tr.innerHTML = `<td>${label}</td><td>${s}</td><td>${details||""}</td>`;
-  document.querySelector('table').appendChild(tr);
-}
-(async()=>{
-  for (const [label, path] of checks){
-    try{
-      const r = await fetch(path, {method:'HEAD'});
-      row(label, r.ok, `<small>${path}</small>`);
-    }catch(e){
-      row(label, false, `<small>${path}</small>`);
-    }
-  }
-})();
-</script>
-</table>
-</body></html>
+<!doctype html><html lang="en"><meta charset="utf-8">
+<title>AA Awnings — diag</title>
+<link rel="stylesheet" href="/assets/style.css?v=nc120">
+<h1>NC120 Diag</h1>
+<p>CSS, JS, and a few images should all load. Open DevTools → Network (Disable cache) then reload.</p>
+<ul>
+  <li>CSS: <code>/assets/style.css?v=nc120</code></li>
+  <li>JS: <code>/assets/app.js?v=nc120</code></li>
+  <li>Logo poster: <code>/images/logo.webp</code></li>
+  <li>Trophy mp4: <code>/images/award/trophy.mp4</code></li>
+  <li>Gallery probe: <code>/images/gallery/Set01A.webp</code></li>
+</ul>
+<script src="/assets/app.js?v=nc120" defer></script>
+</html>
