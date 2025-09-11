@@ -34,9 +34,9 @@ nav a:hover:after{transform:scaleX(1)}
     radial-gradient(1px 1px at 85% 65%, #fff 60%, transparent 61%),
     radial-gradient(2px 2px at 45% 15%, #fff 60%, transparent 61%),
     radial-gradient(1px 1px at 75% 25%, #fff 60%, transparent 61%);
-  animation: drift 28s linear infinite, twinkle 2.8s ease-in-out infinite}
-.starfield::after{filter:blur(.6px);opacity:.7;animation-duration:34s,3.4s}
-@keyframes drift{0%{transform:translateY(0)}100%{transform:translateY(-60px)}}
+  animation: twinkle 2.8s ease-in-out infinite;
+}
+.starfield::after{filter:blur(.6px);opacity:.7;animation-duration:3.4s;}
 @keyframes twinkle{0%,100%{opacity:.5}50%{opacity:1}}
 .hero-wrap{text-align:center;position:relative;z-index:1;padding:6vw 4vw}
 .hero-kicker{font-size:clamp(.9rem,1.2vw,1.05rem);opacity:.9}
