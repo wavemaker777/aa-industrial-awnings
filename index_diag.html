@@ -1,14 +1,36 @@
-<!doctype html><html lang="en"><meta charset="utf-8">
-<title>AA Awnings — diag</title>
-<link rel="stylesheet" href="/assets/style.css?v=nc120">
-<h1>NC120 Diag</h1>
-<p>CSS, JS, and a few images should all load. Open DevTools → Network (Disable cache) then reload.</p>
-<ul>
-  <li>CSS: <code>/assets/style.css?v=nc120</code></li>
-  <li>JS: <code>/assets/app.js?v=nc120</code></li>
-  <li>Logo poster: <code>/images/logo.webp</code></li>
-  <li>Trophy mp4: <code>/images/award/trophy.mp4</code></li>
-  <li>Gallery probe: <code>/images/gallery/Set01A.webp</code></li>
-</ul>
-<script src="/assets/app.js?v=nc120" defer></script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AA Awnings — Diagnostics</title>
+  <link rel="stylesheet" href="/assets/style.css?v=nc120">
+</head>
+<body>
+  <h1>AA Industrial Awnings - Diagnostics</h1>
+  <p>This page tests that CSS, JS, and key images load correctly. Open DevTools → Network (Disable cache) then reload to verify all resources load without errors.</p>
+  
+  <h2>Resource Loading Test</h2>
+  <ul>
+    <li>CSS: <code>/assets/style.css?v=nc120</code></li>
+    <li>JS: <code>/assets/app.js?v=nc120</code></li>
+    <li>Logo poster: <code>/images/logo.webp</code></li>
+    <li>Trophy video: <code>/images/award/trophy.mp4</code></li>
+    <li>Gallery image: <code>/images/gallery/Set01A.webp</code></li>
+  </ul>
+  
+  <h2>Visual Test</h2>
+  <p>Gallery image display test:</p>
+  <div style="max-width: 400px; border: 2px solid #333; padding: 10px; margin: 20px 0;">
+    <img src="/images/gallery/Set01A.webp" alt="Gallery test image" style="width: 100%; height: auto; display: block;">
+    <p style="text-align: center; margin: 10px 0 0 0; font-size: 14px; color: #666;">
+      Test image: Set01A.webp from gallery
+    </p>
+  </div>
+  
+  <h2>Build Information</h2>
+  <p>This diagnostics page uses the same CSS and JS as the main site to ensure consistency.</p>
+  
+  <script src="/assets/app.js?v=nc120" defer></script>
+</body>
 </html>

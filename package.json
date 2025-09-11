@@ -1,0 +1,13 @@
+{
+  "name": "aa-industrial-awnings",
+  "version": "1.0.0",
+  "description": "AA Industrial Awnings website with dual build system",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "test": "node test-build.js"
+  },
+  "keywords": ["awnings", "industrial", "build"],
+  "author": "AA Industrial Awnings",
+  "license": "ISC"
+}
