@@ -2,7 +2,7 @@ const fs = require("fs");
 const fsp = fs.promises;
 const path = require("path");
 const ROOT = process.cwd();
-function cleanUrl(u){ if(!u) return ""; u = decodeURIComponent(u); u = u.split("#")[0].split("?")[0]; return u.replace(/^\/,"""); }
+function cleanUrl(u){ if(!u) return ""; u = decodeURIComponent(u); u = u.split("#")[0].split("?")[0]; return u.replace(/^\//, ""); }
 const must = new Set();
 function collectFromHtml(s, base="."){  const rx = /(src|href)=['"]([^'"]+)['"]/g; let m;
   while ((m = rx.exec(s))) {    const url = cleanUrl(m[2]);    if (!url || /^(data:|https?:|mailto:|tel:|#)/.test(url)) continue;    if (/^images\//i.test(url)) continue; // CI QUICK PASS: skip images
