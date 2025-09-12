@@ -13,3 +13,6 @@ yarn-error.log*
 *.tmp
 *.temp
 .DS_Store
+
+# OS-specific
+Thumbs.db
