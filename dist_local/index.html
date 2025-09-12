@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>AA Industrial Awnings — NC120</title>
+  <link rel="preload" as="video" href="images/logo_anim.mp4">
+  <link rel="preload" as="image" href="images/logo.webp">
+  <link rel="stylesheet" href="assets/style.css?v=1757646187326"/>
+</head>
+<body>
+  <!-- Floating Logo -->
+  <a class="brand-float" href="index.html" aria-label="Home">
+    <video class="logo" playsinline muted autoplay loop preload="metadata" poster="/images/logo.webp">
+      <source src="images/logo_anim.mp4" type="video/mp4"/>
+    </video>
+  </a>
+
+  <!-- Header/Nav -->
+  <header class="topbar">
+    <nav>
+      <a href="#process">Our Process</a>
+      <a href="#gallery">Installations</a>
+      <a href="#quote">Get a Quote</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Award ribbon (shows at 5s) -->
+  <div id="award" class="award-vert" aria-label="Award">
+    <div class="award-strap"><span class="type">Voted Best in the Business — 2025</span></div>
+    <video class="award-vid" playsinline muted autoplay loop preload="metadata" poster="/images/award/trophy.png">
+      <source src="images/award/trophy.mp4" type="video/mp4"/>
+    </video>
+  </div>
+
+  <!-- Hero with twinkle -->
+  <section class="hero" id="home" aria-label="Landing">
+    <div class="starfield" aria-hidden="true"></div>
+    <div class="hero-wrap">
+      <div class="hero-kicker">Factory-Direct • National Install • Best Price</div>
+      <div class="hero-text">Commercial Awnings & Enclosures</div>
+      <div class="hero-sub">Storm-rated aluminum frames • Welded membranes • 48-hour quotes</div>
+    </div>
+  </section>
+
+  <!-- Our Process (FIRST) -->
+  <section id="process" aria-label="Our Process">
+    <h2>Our Process</h2>
+    <p class="lead">Design → Fabrication → Membrane → Install — turnkey delivery, any scale.</p>
+    <div class="process-grid">
+      <figure class="flip"><img src="images/workshop/design.webp" alt="Design stage"></figure>
+      <figure class="flip"><img src="images/workshop/fabrication.webp" alt="Fabrication stage"></figure>
+      <figure class="flip"><img src="images/workshop/fabric.webp" alt="Membrane stage"></figure>
+      <figure class="flip"><img src="images/workshop/install.webp" alt="Install stage"></figure>
+    </div>
+  </section>
+
+  <!-- Installations Gallery -->
+  <section id="gallery" aria-label="Installations">
+    <h2>Installations</h2>
+    <div class="gallery">
+      <div class="panel" data-panel="0"><img alt="Installation 1"><div class="mask"><div class="overlayText"></div></div></div>
+      <div class="panel" data-panel="1"><img alt="Installation 2"><div class="mask"><div class="overlayText"></div></div></div>
+      <div class="panel" data-panel="2"><img alt="Installation 3"><div class="mask"><div class="overlayText"></div></div></div>
+      <div class="panel" data-panel="3"><img alt="Installation 4"><div class="mask"><div class="overlayText"></div></div></div>
+    </div>
+  </section>
+
+  <!-- Quote -->
+  <section id="quote" aria-label="Get a Quote">
+    <h2>Get a 48-Hour Quote</h2>
+    <p class="lead">Send your dimensions, site photos, and city — we’ll turn around a detailed quote fast.</p>
+    <form action="/contact.php" method="post" id="contact">
+      <input required name="name" placeholder="Your Name" style="padding:10px; width:100%; max-width:520px; margin:8px 0">
+      <input required type="email" name="email" placeholder="Email" style="padding:10px; width:100%; max-width:520px; margin:8px 0">
+      <textarea required name="message" placeholder="Project details" rows="5" style="padding:10px; width:100%; max-width:520px; margin:8px 0"></textarea>
+      <button style="padding:12px 18px; font-weight:700">Send</button>
+    </form>
+  </section>
+
+  <footer>© 2025 AA Industrial Awnings • Factory-Direct Nationwide Install</footer>
+  <script src="assets/app.js?v=1757646187326" defer></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diag</title>
+<link id="site-css" rel="stylesheet" href="/assets/style.css?v=1757646187326">
+<style>.diag-banner{padding:10px 14px;margin:0;background:#b00020;color:#fff;font-weight:700}</style>
+</head>
+<body>
+<noscript><div class="diag-banner">ERROR: JavaScript blocked.</div></noscript>
+<header class="topbar"><div class="topbar-inner">
+  <a class="logo-wrap" href="index.html"><img src="/images/logo.webp" alt="Logo" style="height:38px"></a>
+  <nav class="primary"><a href="index.html">Home</a></nav>
+</div></header>
+<div class="section">
+  <h2>Deployment Sanity: PASS</h2>
+  <p>If the image below appears, assets are loading:</p>
+  <picture>
+    <source srcset="images/gallery/Set01A.webp" type="image/webp">
+    <img src="/images/gallery/Set01A.png" alt="Diag Image" style="max-width:420px;outline:4px solid #fff">
+  </picture>
+  <div id="diag-errors"></div>
+</div>
+<script>
+(function(){
+  const cssOk = Array.from(document.styleSheets).some(ss => (ss.href||'').includes('style.css'));
+  if(!cssOk){ document.body.insertAdjacentHTML('afterbegin','<div class="diag-banner">ERROR: CSS failed to load.</div>'); }
+  const tgt = 'images/gallery/Set01A.webp';
+  fetch(tgt, {cache: 'no-store'}).then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); })
+  .catch(e=>{ document.getElementById('diag-errors').innerHTML =
+    '<div class="diag-banner">ERROR: '+tgt+' did not load ('+e.message+'). Check path & filename case.</div>'; });
+})();
+</script>
+</body></html>
