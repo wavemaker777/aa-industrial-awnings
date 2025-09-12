@@ -1,0 +1,15 @@
+# Build artifacts
+dist_server/
+dist_local/
+*.zip
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
