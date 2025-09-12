@@ -1,0 +1,7 @@
+:root{--z-header:100;--z-logo:90;--z-award:80}
+html,body{margin:0;height:100%;background:#0b0b12;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Calibri,Arial,sans-serif}
+.starfield{position:absolute;inset:0;opacity:.65}
+.starfield::before,.starfield::after{content:"";position:absolute;inset:0;background:radial-gradient(2px 2px at 12% 22%, #fff 60%, transparent 61%),radial-gradient(1px 1px at 31% 78%, #fff 60%, transparent 61%);animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.45}50%{opacity:1}}
+.flip,.panel{outline:4px solid #fff;box-shadow:inset 0 0 0 18px rgba(255,255,255,.25);background:#000;border-radius:8px}
+.flip img,.panel img{width:100%;height:100%;object-fit:contain;background:#000}
