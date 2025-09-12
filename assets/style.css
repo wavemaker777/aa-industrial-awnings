@@ -1,51 +1,7 @@
-/* Minimal NC121-safe CSS (no external refs) */
 :root{--z-header:100;--z-logo:90;--z-award:80}
-*{box-sizing:border-box}
 html,body{margin:0;height:100%;background:#0b0b12;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Calibri,Arial,sans-serif}
-a{color:inherit;text-decoration:none}
-
-/* Header + nav stays above award */
-header.topbar{position:sticky;top:0;z-index:var(--z-header);background:rgba(0,0,0,.7);backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid rgba(255,255,255,.12)}
-.topbar-inner{display:flex;align-items:center;gap:16px;padding:10px 16px}
-.logo-wrap{position:relative;z-index:var(--z-logo);flex:0 0 auto}
-nav.primary{margin-left:auto;display:flex;gap:22px}
-nav.primary a{padding:8px 6px;opacity:.9}
-nav.primary a:hover{opacity:1}
-
-/* Hero starfield — twinkle only */
 .starfield{position:absolute;inset:0;opacity:.65}
-.starfield::before,.starfield::after{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(2px 2px at 12% 22%, #fff 60%, transparent 61%),
-    radial-gradient(1px 1px at 31% 78%, #fff 60%, transparent 61%),
-    radial-gradient(2px 2px at 58% 41%, #fff 60%, transparent 61%),
-    radial-gradient(1px 1px at 83% 66%, #fff 60%, transparent 61%),
-    radial-gradient(2px 2px at 44% 18%, #fff 60%, transparent 61%),
-    radial-gradient(1px 1px at 74% 27%, #fff 60%, transparent 61%);
-  animation: twinkle 3s ease-in-out infinite;
-}
-.starfield::after{filter:blur(.7px);opacity:.8;animation-duration:3.6s}
+.starfield::before,.starfield::after{content:"";position:absolute;inset:0;background:radial-gradient(2px 2px at 12% 22%, #fff 60%, transparent 61%),radial-gradient(1px 1px at 31% 78%, #fff 60%, transparent 61%);animation:twinkle 3s ease-in-out infinite}
 @keyframes twinkle{0%,100%{opacity:.45}50%{opacity:1}}
-
-/* Sections + grids */
-.section{padding:48px 16px;max-width:1200px;margin:0 auto}
-.section h2{font-size:2rem;margin:0 0 18px 0}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.grid{grid-template-columns:1fr}}
-
-/* Frames + contain (Process + Gallery) */
-.flip,.panel{position:relative;aspect-ratio:16/10;outline:4px solid #fff;box-shadow:inset 0 0 0 18px rgba(255,255,255,.25);background:#000;border-radius:8px;overflow:hidden}
-.flip img,.panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
-
-/* Gallery mask + typewriter overlay */
-.mask{position:absolute;inset:0;display:grid;place-items:center;background:#000;opacity:0;transition:opacity .35s ease}
-.mask.show{opacity:1}
-.overlayText{font-weight:800;letter-spacing:.6px;white-space:nowrap;overflow:hidden;border-right:4px solid #fff;padding-right:6px}
-
-/* Award strap */
-.award-vert{position:fixed;right:0;top:50%;transform:translateY(-50%) rotate(-90deg);z-index:var(--z-award);display:flex;gap:14px;opacity:0;align-items:center}
-.award-vert.show{opacity:1;transition:opacity .6s ease}
-.award-strap{background:#fff;color:#000;border:1px solid #000;padding:10px 16px;border-radius:10px;font-weight:800}
-@media(max-width:900px){.award-vert{right:10px;top:auto;bottom:10px;transform:none}}
+.flip,.panel{outline:4px solid #fff;box-shadow:inset 0 0 0 18px rgba(255,255,255,.25);background:#000;border-radius:8px}
+.flip img,.panel img{width:100%;height:100%;object-fit:contain;background:#000}
