@@ -30,4 +30,35 @@ jobs:
         run: cd dist_server && node ../verify-assets.js
 
       - name: Verify assets (local)
-        if: ${{
+        if: ${{ hashFiles('dist_local/index.html') != '' }}
+        run: cd dist_local && node ../verify-assets.js
+
+      - name: Create SERVER.zip
+        if: ${{ hashFiles('dist_server/index.html') != '' }}
+        run: |
+          cd dist_server
+          zip -r ../SERVER.zip .
+          echo "SERVER.zip created with $(unzip -l ../SERVER.zip | tail -1 | awk '{print $2}') files"
+
+      - name: Create LOCAL.zip
+        if: ${{ hashFiles('dist_local/index.html') != '' }}
+        run: |
+          cd dist_local
+          zip -r ../LOCAL.zip .
+          echo "LOCAL.zip created with $(unzip -l ../LOCAL.zip | tail -1 | awk '{print $2}') files"
+
+      - name: Upload SERVER.zip artifact
+        if: ${{ hashFiles('SERVER.zip') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: SERVER
+          path: SERVER.zip
+          retention-days: 30
+
+      - name: Upload LOCAL.zip artifact
+        if: ${{ hashFiles('LOCAL.zip') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: LOCAL
+          path: LOCAL.zip
+          retention-days: 30
