@@ -1,4 +1,4 @@
-// build.js — creates dist_server/ (absolute paths) and dist_local/ (relative paths)
+// build.js — guarded dual build (absolute + relative) with cache-bust
 const fs = require("fs");
 const fsp = fs.promises;
 const path = require("path");
@@ -11,6 +11,7 @@ const BUST = `v=${Date.now()}`;
 async function rmrf(p){ await fsp.rm(p, { recursive: true, force: true }); }
 async function mkdirp(p){ await fsp.mkdir(p, { recursive: true }); }
 async function cpDir(src, dst){
+  if (!fs.existsSync(src)) return;               // guard: skip missing folders
   await mkdirp(dst);
   for (const ent of await fsp.readdir(src, { withFileTypes: true })) {
     const s = path.join(src, ent.name), d = path.join(dst, ent.name);
@@ -20,6 +21,7 @@ async function cpDir(src, dst){
 }
 
 function rewritePaths(html, mode) {
+  if (!html) return "";
   const isServer = mode === "server";
   const cssHref  = isServer ? '/assets/style.css' : 'assets/style.css';
   const jsSrc    = isServer ? '/assets/app.js'    : 'assets/app.js';
@@ -45,41 +47,39 @@ function rewritePaths(html, mode) {
   return html;
 }
 
-async function rewriteAppJsFor(mode) {
-  const p = path.join(ROOT, "assets", "app.js");
-  let s = await fsp.readFile(p, "utf8").catch(()=> "");
-  if (!s) return s;
-  if (mode === "server") s = s.replace(/(['"])images\//g, '$1/images/');
-  else s = s.replace(/(['"])\/images\//g, '$1images/');
-  return s;
-}
+async function readOrEmpty(p){ try { return await fsp.readFile(p,"utf8"); } catch { return ""; } }
 
 async function writeBuild(mode) {
   const OUT = mode === "server" ? OUT_SERVER : OUT_LOCAL;
   await rmrf(OUT); await mkdirp(OUT);
 
-  if (fs.existsSync(path.join(ROOT, "assets")))
-    await cpDir(path.join(ROOT, "assets"), path.join(OUT, "assets"));
-  if (fs.existsSync(path.join(ROOT, "images")))
-    await cpDir(path.join(ROOT, "images"), path.join(OUT, "images"));
+  await cpDir(path.join(ROOT, "assets"), path.join(OUT, "assets"));
+  await cpDir(path.join(ROOT, "images"), path.join(OUT, "images"));
 
-  const jsOut = await rewriteAppJsFor(mode);
-  if (jsOut) await fsp.writeFile(path.join(OUT, "assets", "app.js"), jsOut, "utf8");
+  const js = await readOrEmpty(path.join(ROOT,"assets","app.js"));
+  if (js) {
+    let s = js;
+    s = mode === "server" ? s.replace(/(['"])images\//g,'$1/images/') :
+                            s.replace(/(['"])\/images\//g,'$1images/');
+    await fsp.writeFile(path.join(OUT,"assets","app.js"), s, "utf8");
+  }
 
-  if (fs.existsSync(path.join(ROOT, "assets", "style.css")))
-    await fsp.copyFile(path.join(ROOT, "assets", "style.css"), path.join(OUT, "assets", "style.css"));
+  const css = path.join(ROOT,"assets","style.css");
+  if (fs.existsSync(css)) {
+    await fsp.copyFile(css, path.join(OUT,"assets","style.css"));
+  }
 
-  for (const f of ["index.html", "index_diag.html"]) {
-    if (!fs.existsSync(path.join(ROOT, f))) continue;
-    let html = await fsp.readFile(path.join(ROOT, f), "utf8");
-    html = rewritePaths(html, mode);
-    await fsp.writeFile(path.join(OUT, f), html, "utf8");
+  for (const f of ["index.html","index_diag.html"]) {
+    const src = path.join(ROOT,f);
+    if (!fs.existsSync(src)) continue;
+    const html = rewritePaths(await readOrEmpty(src), mode);
+    await fsp.writeFile(path.join(OUT,f), html, "utf8");
   }
 
   if (mode === "server") {
-    for (const f of [".htaccess", "contact.php"]) {
-      if (fs.existsSync(path.join(ROOT, f)))
-        await fsp.copyFile(path.join(ROOT, f), path.join(OUT, f));
+    for (const f of [".htaccess","contact.php"]) {
+      const p = path.join(ROOT,f);
+      if (fs.existsSync(p)) await fsp.copyFile(p, path.join(OUT,f));
     }
   }
 }
