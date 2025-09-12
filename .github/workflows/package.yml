@@ -1,0 +1,32 @@
+name: package
+on:
+  push:
+    branches: [ main, '**/copilot/**', 'copilot/**' ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build dual outputs
+        run: node build.js
+      - name: Verify assets (server)
+        run: cd dist_server && node ../verify-assets.js
+      - name: Verify assets (local)
+        run: cd dist_local && node ../verify-assets.js
+      - name: Zip SERVER
+        run: cd dist_server && zip -r ../SERVER.zip .
+      - name: Zip LOCAL
+        run: cd dist_local && zip -r ../LOCAL.zip .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SERVER.zip
+          path: SERVER.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LOCAL.zip
+          path: LOCAL.zip
