@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: '20'
       - name: Build dual outputs
-        run: node build.js
+        run: node build.cjs
       - name: List outputs (debug)
         run: |
           echo "::group::dist_server"; ls -la dist_server || true; echo "::endgroup::"
