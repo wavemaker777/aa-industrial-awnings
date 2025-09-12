@@ -30,25 +30,4 @@ jobs:
         run: cd dist_server && node ../verify-assets.js
 
       - name: Verify assets (local)
-        if: ${{ hashFiles('dist_local/index.html') != '' }}
-        run: cd dist_local && node ../verify-assets.js
-
-      - name: Zip SERVER
-        if: ${{ hashFiles('dist_server/**') != '' }}
-        run: cd dist_server && zip -r ../SERVER.zip .
-
-      - name: Zip LOCAL
-        if: ${{ hashFiles('dist_local/**') != '' }}
-        run: cd dist_local && zip -r ../LOCAL.zip .
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ hashFiles('SERVER.zip') != '' }}
-        with:
-          name: SERVER.zip
-          path: SERVER.zip
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ hashFiles('LOCAL.zip') != '' }}
-        with:
-          name: LOCAL.zip
-          path: LOCAL.zip
+        if: ${{
