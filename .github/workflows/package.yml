@@ -3,7 +3,6 @@ on:
   push:
     branches: [ main, '**/copilot/**', 'copilot/**' ]
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,22 +11,33 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
       - name: Build dual outputs
-        run: node build.js
-
+        run: node build.cjs
       - name: List outputs (debug)
         run: |
-          echo "::group::tree dist_server"
-          ls -la dist_server || true
-          echo "::endgroup::"
-          echo "::group::tree dist_local"
-          ls -la dist_local || true
-          echo "::endgroup::"
-
+          echo "::group::dist_server"; ls -la dist_server || true; echo "::endgroup::"
+          echo "::group::dist_local";  ls -la dist_local  || true;  echo "::endgroup::"
       - name: Verify assets (server)
         if: ${{ hashFiles('dist_server/index.html') != '' }}
         run: cd dist_server && node ../verify-assets.js
-
       - name: Verify assets (local)
-        if: ${{
+        if: ${{ hashFiles('dist_local/index.html') != '' }}
+        run: cd dist_local && node ../verify-assets.js
+      - name: Zip SERVER
+        if: ${{ hashFiles('dist_server/**') != '' }}
+        run: cd dist_server && zip -r ../SERVER.zip .
+      - name: Zip LOCAL
+        if: ${{ hashFiles('dist_local/**') != '' }}
+        run: cd dist_local && zip -r ../LOCAL.zip .
+      - uses: actions/upload-artifact@v4
+        if: ${{ hashFiles('SERVER.zip') != '' }}
+        with:
+          name: SERVER.zip
+          path: SERVER.zip
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: ${{ hashFiles('LOCAL.zip') != '' }}
+        with:
+          name: LOCAL.zip
+          path: LOCAL.zip
+          retention-days: 30

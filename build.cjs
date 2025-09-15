@@ -1,4 +1,4 @@
-// build.js — guarded dual build (absolute + relative) with cache-bust
+// build.cjs — guarded dual build (absolute + relative) with cache-bust
 const fs = require("fs");
 const fsp = fs.promises;
 const path = require("path");
@@ -27,7 +27,7 @@ function rewritePaths(html, mode) {
   const homeHref = isServer ? '/'                 : 'index.html';
   html = html.replace(/href="[^"]*style\.css[^"]*"/, `href="${cssHref}?${BUST}"`);
   html = html.replace(/src="[^"]*app\.js[^"]*"/,     `src="${jsSrc}?${BUST}"`);
-  html = html.replace(/href="\/"/g, `href="${homeHref}"`);
+  html = html.replace(/href="\//g, `href="${homeHref}"`);
   if (isServer) {
     html = html.replace(/href="assets\//g, 'href="/assets/')
                .replace(/src="assets\//g,  'src="/assets/')
@@ -47,6 +47,15 @@ async function writeBuild(mode) {
   await rmrf(OUT); await mkdirp(OUT);
   await cpDir(path.join(ROOT, "assets"), path.join(OUT, "assets"));
   await cpDir(path.join(ROOT, "images"), path.join(OUT, "images"));
+  // Ensure required images/hero files are present
+  const heroSrc = path.join(ROOT, "images", "hero");
+  const heroDst = path.join(OUT, "images", "hero");
+  await mkdirp(heroDst);
+  for (const f of ["landing.gif", "landing.mp4"]) {
+    const src = path.join(heroSrc, f);
+    const dst = path.join(heroDst, f);
+    if (fs.existsSync(src)) await fsp.copyFile(src, dst);
+  }
   const js = await readOrEmpty(path.join(ROOT,"assets","app.js"));
   if (js) {
     let s = js;

@@ -1,18 +1,31 @@
-const fs = require("fs");
-const fsp = fs.promises;
-const path = require("path");
+const fs = require("fs"), fsp = fs.promises, path = require("path");
 const ROOT = process.cwd();
-function cleanUrl(u){ if(!u) return ""; u = decodeURIComponent(u); u = u.split("#")[0].split("?")[0]; return u.replace(/^\/,"""); }
-const must = new Set();
-function collectFromHtml(s, base="."){  const rx = /(src|href)=['"]([^'"]+)['"]/g; let m;
-  while ((m = rx.exec(s))) {    const url = cleanUrl(m[2]);    if (!url || /^(data:|https?:|mailto:|tel:|#)/.test(url)) continue;    if (/^images\//i.test(url)) continue; // CI QUICK PASS: skip images
-    must.add(path.join(base, url));  }
-}
+const REQUIRED = [
+  "assets/style.css","assets/app.js",
+  "images/hero/landing.gif","images/hero/landing.mp4",
+  "images/award/trophy.gif","images/award/trophy.mp4",
+  "images/logo.webp","images/logo_anim.gif",
+  "images/workshop/design.webp","images/workshop/fabrication.webp","images/workshop/fabric.webp","images/workshop/install.webp",
+  "images/gallery/Set01A.webp","images/gallery/Set01B.webp",
+  "images/gallery/Set02A.webp","images/gallery/Set02B.webp",
+  "images/gallery/Set03A.webp","images/gallery/Set03B.webp",
+  "images/gallery/Set04A.webp","images/gallery/Set04B.webp",
+  "images/gallery/Set05A.webp","images/gallery/Set05B.webp",
+  "images/gallery/Set06A.webp","images/gallery/Set06B.webp",
+  "images/gallery/Set07A.webp","images/gallery/Set07B.webp",
+  "images/gallery/Set08A.webp","images/gallery/Set08B.webp",
+  "images/gallery/Set09A.webp","images/gallery/Set09B.webp",
+  "images/gallery/Set10A.webp","images/gallery/Set10B.webp",
+  "images/gallery/Set11A.webp","images/gallery/Set11B.webp",
+  "images/gallery/Set12A.webp","images/gallery/Set12B.webp",
+];
 async function exists(p){ try{ await fsp.access(p); return true; }catch{ return false; } }
-(async()=>{  try{ collectFromHtml(await fsp.readFile("index.html","utf8")); }catch{}
-  try{ collectFromHtml(await fsp.readFile("index_diag.html","utf8")); }catch{}
+(async()=>{
   let fail=0;
-  for (const rel of must){    const ok = await exists(path.join(ROOT,rel));    if(!ok){ console.error("MISSING:", rel); fail++; }  }
-  if (fail){ console.error(`\n❌ Missing ${fail} referenced file(s).`); process.exit(1); }
-  else { console.log("✅ CSS/JS verified (images ignored for CI)." ); }
+  for (const rel of REQUIRED){
+    const ok = await exists(path.join(ROOT, rel));
+    if(!ok){ console.error("MISSING:", rel); fail++; }
+  }
+  if(fail){ console.error(`\n❌ Missing ${fail} required file(s). NO PLACEHOLDERS CREATED.`); process.exit(1); }
+  else { console.log("✅ All required CSS/JS/images present."); }
 })();
