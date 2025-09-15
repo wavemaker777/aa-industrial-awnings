@@ -1,7 +1,7 @@
 name: package
 on:
   push:
-    branches: [ main, '**/copilot/**', 'copilot/**' ]
+    branches: [ main, "copilot/**", "**/copilot/**" ]
   workflow_dispatch:
 
 jobs:
@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -16,18 +17,36 @@ jobs:
       - name: Build dual outputs
         run: node build.js
 
-      - name: List outputs (debug)
-        run: |
-          echo "::group::tree dist_server"
-          ls -la dist_server || true
-          echo "::endgroup::"
-          echo "::group::tree dist_local"
-          ls -la dist_local || true
-          echo "::endgroup::"
-
       - name: Verify assets (server)
-        if: ${{ hashFiles('dist_server/index.html') != '' }}
-        run: cd dist_server && node ../verify-assets.js
+        run: |
+          cd dist_server
+          node ../verify-assets.js
 
       - name: Verify assets (local)
-        if: ${{
+        run: |
+          cd dist_local
+          node ../verify-assets.js
+
+      - name: Zip SERVER
+        run: |
+          cd dist_server
+          zip -r ../SERVER.zip .
+
+      - name: Zip LOCAL
+        run: |
+          cd dist_local
+          zip -r ../LOCAL.zip .
+
+      - name: Upload SERVER.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: SERVER.zip
+          path: SERVER.zip
+          retention-days: 30
+
+      - name: Upload LOCAL.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: LOCAL.zip
+          path: LOCAL.zip
+          retention-days: 30
